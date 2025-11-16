@@ -949,7 +949,7 @@
           <img src="logo.png" alt="Logo" class="site-logo">
           </h2>
 
-          <div class="subtitle"> • Veg — Non Veg • Delivery Available</div>
+          <div class="subtitle"> • Veg — Non Veg <br> • Delivery Available  <br> Mobile no: 9011355451</div>
           <div class="gold-line"></div>
         </div>
 
@@ -989,6 +989,14 @@
       <section class="gallery-section">
         <h2 class="section-title">Hotel Gallery</h2>
         <div class="gallery-grid" id="hotelGallery">
+          <!-- Hotel gallery images will be inserted here -->
+        </div>
+      </section>
+
+       <!-- Hotel Gallery Section -->
+      <section class="gallery-section">
+        <h2 class="section-title">Payment QR</h2>
+        <div class="gallery-grid" id="QRGallery">
           <!-- Hotel gallery images will be inserted here -->
         </div>
       </section>
@@ -1320,6 +1328,13 @@
       { src: 'p4.jpg', alt: 'Hotel interior decor' }
     ];
 
+     const QRGalleryImages = [
+      { src: 'qr.jpg', alt: 'Hotel Pranav exterior' },
+      // { src: 'p2.jpg', alt: 'Our elegant dining area' },
+      // { src: 'p3.jpg', alt: 'Comfortable seating arrangement' },
+      // { src: 'p4.jpg', alt: 'Hotel interior decor' }
+    ];
+
     // Cart functionality
     let cart = [];
     const cartButton = document.getElementById('cartButton');
@@ -1646,3 +1661,4 @@
   </script>
 </body>
 </html>
+
