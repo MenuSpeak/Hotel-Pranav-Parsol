@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hotel Pranav Restaurants Parsol Service</title>
+  <title>Hotel Pranav Restaurants - Delivery Service</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -711,23 +711,38 @@
       font-size: 16px;
     }
 
-    /* Table Number Input */
-    .table-number-section {
+    /* Customer Details Section */
+    .customer-details-section {
       margin-bottom: 20px;
-      padding: 16px;
+      padding: 20px;
       background: rgba(255, 255, 255, 0.02);
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-    .table-number-label {
+    .customer-details-title {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: var(--gold2);
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .customer-details-label {
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
       color: var(--gold2);
+      font-size: 14px;
     }
 
-    .table-number-input {
+    .customer-details-label::after {
+      content: " *";
+      color: #ff6b6b;
+    }
+
+    .customer-details-input {
       width: 100%;
       padding: 12px;
       border-radius: 8px;
@@ -735,11 +750,19 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
       color: white;
       font-size: 16px;
+      font-family: inherit;
+      margin-bottom: 15px;
     }
 
-    .table-number-input:focus {
+    .customer-details-input:focus {
       outline: none;
       border-color: var(--gold2);
+      box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.1);
+    }
+
+    textarea.customer-details-input {
+      min-height: 80px;
+      resize: vertical;
     }
 
     /* Print Button */
@@ -924,12 +947,12 @@
           <img src="logo.png" alt="Logo" class="site-logo">
           </h2>
 
-          <div class="subtitle"> • Veg — Non Veg</div>
+          <div class="subtitle"> • Veg — Non Veg • Delivery Available</div>
           <div class="gold-line"></div>
         </div>
 
         <div class="controls">
-          <div class="search" role="search">
+          <div class="search-container" role="search">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
               <path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
               <circle cx="11" cy="11" r="6" stroke="rgba(255,255,255,0.6)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></circle>
@@ -937,13 +960,15 @@
             <input id="search" placeholder="Search dishes, ingredients..." />
           </div>
 
-          <div class="tabs" role="tablist">
-              <button class="tab active" data-cat="all">All</button>
-              <button class="tab" data-cat="Veg Main Course">Veg Main Course</button>
-              <button class="tab" data-cat="Non-Veg Main Course">Non-Veg Main Course</button>
-              <button class="tab" data-cat="Rice & Biryani">Rice & Biryani</button>
-              <button class="tab" data-cat="Starters">Starters</button>
-              <button class="tab" data-cat="Drinks">Drinks</button>
+          <div class="tabs-container">
+            <div class="tabs-scroll" role="tablist">
+                <button class="tab active" data-cat="all">All</button>
+                <button class="tab" data-cat="Veg Main Course">Veg Main Course</button>
+                <button class="tab" data-cat="Non-Veg Main Course">Non-Veg Main Course</button>
+                <button class="tab" data-cat="Rice & Biryani">Rice & Biryani</button>
+                <button class="tab" data-cat="Starters">Starters</button>
+                <button class="tab" data-cat="Drinks">Drinks</button>
+            </div>
           </div>
         </div>
       </div>
@@ -998,14 +1023,31 @@
   <div class="cart-modal" id="cartModal">
     <div class="cart-content">
       <div class="cart-header">
-        <h3 class="cart-title">Your Order</h3>
+        <h3 class="cart-title">Your Delivery Order</h3>
         <button class="close-cart" id="closeCart">&times;</button>
       </div>
       
-      <!-- Table Number Input Section -->
-      <div class="table-number-section">
-        <label for="tableNumber" class="table-number-label">Enter Table Number</label>
-        <input type="text" id="tableNumber" class="table-number-input" placeholder="e.g., Table 5" />
+      <!-- Customer Details Section -->
+      <div class="customer-details-section">
+        <h4 class="customer-details-title">📦 Delivery Information</h4>
+        
+        <div>
+          <label for="customerName" class="customer-details-label">Customer Name</label>
+          <input type="text" id="customerName" class="customer-details-input" placeholder="Enter your full name" required />
+        </div>
+        
+        <div>
+          <label for="customerMobile" class="customer-details-label">Mobile Number</label>
+          <input type="tel" id="customerMobile" class="customer-details-input" placeholder="Enter 10-digit mobile number" 
+                 pattern="[0-9]{10}" maxlength="10" required />
+        </div>
+        
+        <div>
+          <label for="deliveryAddress" class="customer-details-label">Delivery Address</label>
+          <textarea id="deliveryAddress" class="customer-details-input" 
+                    placeholder="Enter complete delivery address with landmark" 
+                    rows="3" required></textarea>
+        </div>
       </div>
       
       <div class="cart-items" id="cartItems">
@@ -1031,12 +1073,10 @@
   </div>
 
   <script>
-    // Your existing menu data remains unchanged
+    // Menu data
     const data = [
-      // ... your existing menu data (unchanged) ...
-
       // --- Veg Main Course ---
-  {"id": 1, "cat": "Veg Main Course", "name": "पनीर टिक्का मसाला (Paneer Tikka Masala)", "size": "Full", "price": "₹200", "desc": "Soft paneer cubes in rich tomato gravy with aromatic spices.", "tags": ["Paneer", "Tikka Masala", "Main Course"], "img": "img/paneer-tikka-masala.jpeg"},
+    {"id": 1, "cat": "Veg Main Course", "name": "पनीर टिक्का मसाला (Paneer Tikka Masala)", "size": "Full", "price": "₹200", "desc": "Soft paneer cubes in rich tomato gravy with aromatic spices.", "tags": ["Paneer", "Tikka Masala", "Main Course"], "img": "img/paneer-tikka-masala.jpeg"},
   {"id": 2, "cat": "Veg Main Course", "name": "पनीर मसाला (Paneer Masala)", "size": "Full", "price": "₹150", "desc": "Paneer cooked in traditional Indian spices and gravy.", "tags": ["Paneer", "Masala", "Main Course"], "img": "img/paneer-masala.jpeg"},
   {"id": 3, "cat": "Veg Main Course", "name": "आलू मटर (Aaloo Matar)", "size": "Full", "price": "₹120", "desc": "Potatoes and green peas cooked in flavorful gravy.", "tags": ["Aaloo", "Matar", "Main Course"], "img": "img/aaloo-matar.jpeg"},
   {"id": 4, "cat": "Veg Main Course", "name": "मटर पनीर मसाला (Matar Paneer Masala)", "size": "Full", "price": "₹150", "desc": "Green peas and paneer in rich masala gravy.", "tags": ["Matar", "Paneer", "Masala", "Main Course"], "img": "img/matar-paneer-masala.jpeg"},
@@ -1260,6 +1300,8 @@
   {"id": 215, "cat": "Drinks", "name": "Gold Flake Button", "price": "₹15", "desc": "Variant of Gold Flake with filter button.", "tags": ["Cigarette", "Smoke"], "img": "img/gold_flake_button.jpeg"},
   {"id": 216, "cat": "Drinks", "name": "Four Square", "price": "₹15", "desc": "Cigarette brand.", "tags": ["Cigarette", "Smoke"], "img": "img/four_square.jpeg"},
   {"id": 217, "cat": "Drinks", "name": "Four Square Crush", "price": "₹15", "desc": "Variant of Four Square with crush capsule.", "tags": ["Cigarette", "Smoke"], "img": "img/four_square_crush.jpeg"},
+   
+    
     ];
 
     // Gallery images data
@@ -1267,18 +1309,14 @@
       { src: 'h1.jpg', alt: 'Happy customer enjoying our food' },
       { src: 'h2.jpg', alt: 'Family dining at Hotel Pranav' },
       { src: 'h3.jpg', alt: 'Celebrating special occasions' },
-      { src: 'h4.jpg', alt: 'Group enjoying our hospitality' },
-      // { src: 'gallery/customer5.jpg', alt: 'Customer with our signature dish' },
-      // { src: 'gallery/customer6.jpg', alt: 'Smiling customer at our restaurant' }
+      { src: 'h4.jpg', alt: 'Group enjoying our hospitality' }
     ];
 
     const hotelGalleryImages = [
       { src: 'p1.jpg', alt: 'Hotel Pranav exterior' },
       { src: 'p2.jpg', alt: 'Our elegant dining area' },
       { src: 'p3.jpg', alt: 'Comfortable seating arrangement' },
-      { src: 'p4.jpg', alt: 'Hotel interior decor' },
-      { src: 'p5.jpg', alt: 'Our well-stocked bar' },
-      // { src: 'gallery/hotel6.jpg', alt: 'Special events setup' }
+      { src: 'p4.jpg', alt: 'Hotel interior decor' }
     ];
 
     // Cart functionality
@@ -1292,7 +1330,11 @@
     const cartTotal = document.getElementById('cartTotal');
     const clearCart = document.getElementById('clearCart');
     const whatsappOrder = document.getElementById('whatsappOrder');
-    const tableNumberInput = document.getElementById('tableNumber');
+
+    // Customer details elements
+    const customerName = document.getElementById('customerName');
+    const customerMobile = document.getElementById('customerMobile');
+    const deliveryAddress = document.getElementById('deliveryAddress');
 
     // Image modal functionality
     const imageModal = document.getElementById('imageModal');
@@ -1423,20 +1465,42 @@
     // WhatsApp order function
     whatsappOrder.addEventListener('click', () => {
       if (cart.length === 0) {
-        alert('Your cart is empty!');
+        alert('Your cart is empty! Please add some items first.');
         return;
       }
       
-      const tableNumber = tableNumberInput.value.trim();
-      if (!tableNumber) {
-        alert('Please enter your table number');
+      const name = customerName.value.trim();
+      const mobile = customerMobile.value.trim();
+      const address = deliveryAddress.value.trim();
+      
+      // Validation
+      if (!name) {
+        alert('Please enter customer name');
+        customerName.focus();
         return;
       }
       
-      let message = `Hello! I would like to place an order from Table: ${tableNumber}:\n\n`;
+      if (!mobile || mobile.length !== 10) {
+        alert('Please enter valid 10-digit mobile number');
+        customerMobile.focus();
+        return;
+      }
+      
+      if (!address) {
+        alert('Please enter delivery address');
+        deliveryAddress.focus();
+        return;
+      }
+      
+      let message = `🏨 *Hotel Pranav Restaurants - Delivery Order* 🏨\n\n`;
+      message += `📋 *Customer Details:*\n`;
+      message += `👤 Name: ${name}\n`;
+      message += `📞 Mobile: ${mobile}\n`;
+      message += `📍 Address: ${address}\n\n`;
+      message += `🍽️ *Order Items:*\n`;
       
       cart.forEach(item => {
-        message += `${item.name} - ${item.quantity} x ${item.price}\n`;
+        message += `• ${item.name} - ${item.quantity} x ${item.price}\n`;
       });
       
       const totalAmount = cart.reduce((sum, item) => {
@@ -1444,7 +1508,10 @@
         return sum + (price * item.quantity);
       }, 0);
       
-      message += `\nTotal: ₹${totalAmount}\n\nThank you!`;
+      message += `\n💰 *Total Amount: ₹${totalAmount}*\n\n`;
+      message += `⏰ *Delivery Time:* ASAP\n`;
+      message += `💳 *Payment Mode:* Cash on Delivery\n\n`;
+      message += `Thank you! 🙏`;
       
       // Encode the message for WhatsApp URL
       const encodedMessage = encodeURIComponent(message);
@@ -1453,6 +1520,39 @@
       // Open WhatsApp in a new tab
       window.open(whatsappURL, '_blank');
     });
+
+    // Auto-format mobile number
+    customerMobile.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 10) value = value.substring(0, 10);
+      e.target.value = value;
+    });
+
+    // Save customer details to localStorage
+    function saveCustomerDetails() {
+      const details = {
+        name: customerName.value,
+        mobile: customerMobile.value,
+        address: deliveryAddress.value
+      };
+      localStorage.setItem('customerDetails', JSON.stringify(details));
+    }
+
+    // Load saved details
+    function loadCustomerDetails() {
+      const saved = localStorage.getItem('customerDetails');
+      if (saved) {
+        const details = JSON.parse(saved);
+        customerName.value = details.name || '';
+        customerMobile.value = details.mobile || '';
+        deliveryAddress.value = details.address || '';
+      }
+    }
+
+    // Auto-save when user types
+    customerName.addEventListener('input', saveCustomerDetails);
+    customerMobile.addEventListener('input', saveCustomerDetails);
+    deliveryAddress.addEventListener('input', saveCustomerDetails);
 
     // Render menu items
     function renderMenuItems(items) {
@@ -1520,6 +1620,7 @@
       renderMenuItems(data);
       renderGallery('happyCustomersGallery', happyCustomersImages);
       renderGallery('hotelGallery', hotelGalleryImages);
+      loadCustomerDetails();
       
       // Tab functionality
       document.querySelectorAll('.tab').forEach(tab => {
@@ -1544,10 +1645,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
